@@ -1,5 +1,6 @@
 package ru.itis.shop.app;
 
+import java.io.IOException;
 import java.util.Properties;
 import java.util.Scanner;
 
@@ -19,7 +20,7 @@ public class Main {
 
         try {
             properties.load(Main.class.getClassLoader().getResourceAsStream("db.properties"));
-        } catch (Exception e) {
+        } catch (IOException e) {
             throw new IllegalStateException(e);
         }
         
