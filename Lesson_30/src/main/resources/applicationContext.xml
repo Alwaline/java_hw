@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/util
+       http://www.springframework.org/schema/util/spring-util.xsd">
+
+    <bean id="userService" class="ru.itis.spring.users.service.UserService">
+        <constructor-arg name="usersRepository" ref="userRepositoryJdbc"/>
+        <constructor-arg name="notifier" ref="notifierSms"/>
+    </bean>
+
+    <bean id="usersRepositoryFile" class="ru.itis.spring.users.repository.UsersRepositoryFileImpl">
+        <constructor-arg name="filePath" value="users.txt"/>
+    </bean>
+
+    <bean id="notifierPush" class="ru.itis.spring.users.notifiers.NotifierPushImpl"/>
+
+    <bean id="notifierSms" class="ru.itis.spring.users.notifiers.NotifierSmsImpl">
+        <property name="smsServer" value="Sms Aero"/>
+    </bean>
+
+    <bean id="notifierEmail" class="ru.itis.spring.users.notifiers.NotifierEmailImpl">
+        <property name="smtpServer" value="smtp.gmail.com"/>
+    </bean>
+
+    <util:properties id="dbProps" location="classpath:db.properties"/>
+
+    <bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
+        <constructor-arg ref="dbProps"/>
+    </bean>
+
+    <bean id="dataSource" class="com.zaxxer.hikari.HikariDataSource">
+        <constructor-arg ref="hikariConfig"/>
+    </bean>
+
+    <bean id="userRepositoryJdbc" class="ru.itis.spring.users.repository.UsersRepositoryJdbcImpl">
+        <constructor-arg ref="dataSource"/>
+    </bean>
+</beans>

@@ -1,0 +1,1 @@
+Настройть HikariConnectionPool через context-xml
